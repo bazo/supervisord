@@ -3,9 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/jessevdk/go-flags"
-	reaper "github.com/ochinchina/go-reaper"
-	log "github.com/sirupsen/logrus"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -13,6 +10,12 @@ import (
 	"strings"
 	"syscall"
 	"unicode"
+
+	"github.com/bazo/supervisord/slack"
+
+	"github.com/jessevdk/go-flags"
+	reaper "github.com/ochinchina/go-reaper"
+	log "github.com/sirupsen/logrus"
 )
 
 type Options struct {
@@ -29,6 +32,7 @@ func init() {
 		log.SetFormatter(&log.TextFormatter{DisableColors: false, FullTimestamp: true})
 	}
 	log.SetLevel(log.DebugLevel)
+	log.AddHook(slack.NewSlackFormatter())
 }
 
 func initSignals(s *Supervisor) {

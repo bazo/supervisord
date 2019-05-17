@@ -24,6 +24,9 @@ func NewProcessManager() *ProcessManager {
 func (pm *ProcessManager) CreateProcess(supervisor_id string, config *config.ConfigEntry) *Process {
 	pm.lock.Lock()
 	defer pm.lock.Unlock()
+
+	log.WithFields(log.Fields{"supervisor_id": supervisor_id}).Info("supervisor_id")
+
 	if config.IsProgram() {
 		return pm.createProgram(supervisor_id, config)
 	} else if config.IsEventListener() {

@@ -2,6 +2,12 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/ochinchina/supervisord/config"
 	"github.com/ochinchina/supervisord/events"
 	"github.com/ochinchina/supervisord/faults"
@@ -10,11 +16,6 @@ import (
 	"github.com/ochinchina/supervisord/signals"
 	"github.com/ochinchina/supervisord/types"
 	"github.com/ochinchina/supervisord/util"
-	"net/http"
-	"os"
-	"strings"
-	"sync"
-	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -436,6 +437,7 @@ func (s *Supervisor) WaitForExit() {
 func (s *Supervisor) createPrograms(prevPrograms []string) {
 
 	programs := s.config.GetProgramNames()
+
 	for _, entry := range s.config.GetPrograms() {
 		s.procMgr.CreateProcess(s.GetSupervisorId(), entry)
 	}
